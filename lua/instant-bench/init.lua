@@ -37,6 +37,7 @@ end
 function M.sendSelectedText()
     local selected_text = getSelectedText()
     print("Selected:", selected_text)
+    print("File type:", vim.bo.filetype)
     -- local endpoint_url = "http://your.endpoint.url"
     -- local res, code, headers, body = makeHttpRequest(endpoint_url, selected_text)
 

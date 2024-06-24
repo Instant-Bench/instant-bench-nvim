@@ -1,19 +1,9 @@
 local M = {}
 
 local function makeHttpRequest(url, data)
-    local http = require("socket.http")
-    local response_body = {}
-    local res, code, response_headers = http.request {
-        url = url,
-        method = "POST",
-        headers = {
-            ["Content-Type"] = "text/plain",
-            ["Content-Length"] = string.len(data)
-        },
-        source = ltn12.source.string(data),
-        sink = ltn12.sink.table(response_body)
-    }
-    return res, code, response_headers, table.concat(response_body)
+    local requests = require("requests")
+    local reponse = requests.post{url, data}
+    return response
 end
 
 local function getSelectedText()
@@ -38,16 +28,16 @@ function M.sendSelectedText()
     local selected_text = getSelectedText()
     print("Selected:", selected_text)
     print("File type:", vim.bo.filetype)
-    -- local endpoint_url = "http://your.endpoint.url"
-    -- local res, code, headers, body = makeHttpRequest(endpoint_url, selected_text)
+    local endpoint_url = "http://localhost:3000/"
+    local res, code, headers, body = makeHttpRequest(endpoint_url, {"extension": vim.bo.filetype, "code": selected_text})
 
-    -- if code == 200 then
-    --     print("HTTP request successful!")
-    --     print("Response Body:", body)
-    -- else
-    --     print("HTTP request failed. Error code:", code)
-    --     print("Response Body:", body)
-    -- end
+    if code == 200 then
+        print("HTTP request successful!")
+        print("Response Body:", body)
+    else
+        print("HTTP request failed. Error code:", code)
+        print("Response Body:", body)
+    end
 end
 
 return M

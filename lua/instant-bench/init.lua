@@ -39,20 +39,25 @@ local function getSelectedText()
     return selected_text
 end
 
+local uv = vim.loop
+
+local write_file = function(path, data)
+  local fd = uv.fs_open(path, "w", 438)
+  uv.fs_write(fd, data)
+  uv.fs_close(fd)
+end
+
 function M.sendSelectedText()
     local selected_text = getSelectedText()
-    print("Selected:", selected_text)
-    print("File type:", vim.bo.filetype)
     local endpoint_url = "http://localhost:3000/"
     local response, err = makeHttpRequest(endpoint_url, { extension = vim.bo.filetype, code = selected_text })
 
     if response then
         if response.status_code == 200 then
-            print("HTTP request successful!")
-            print("Response Body:", response.text)
+            print("Creating... " .. type(response.text))
+            write_file("bench." .. vim.bo.filetype, response.text)
         else
             print("HTTP request failed. Error code:", response.status_code)
-            print("Response Body:", response.text)
         end
     else
         print("HTTP request failed. Error:", err)

@@ -55,7 +55,9 @@ function M.sendSelectedText()
     if response then
         if response.status_code == 200 then
             print("Creating... " .. type(response.text))
-            write_file("bench." .. vim.bo.filetype, response.text)
+            local filename = "bench." .. vim.bo.filetype
+            write_file(filename, response.text)
+            vim.api.nvim_command("vsplit " .. filename)
         else
             print("HTTP request failed. Error code:", response.status_code)
         end

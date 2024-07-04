@@ -1,1 +1,1 @@
-command! -range Ib lua require('instant-bench').sendSelectedText()
+vnoremap Z :<C-u>lua require('instant-bench').sendSelectedText()<CR>

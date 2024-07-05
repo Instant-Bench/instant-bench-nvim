@@ -54,8 +54,13 @@ function M.sendSelectedText()
 
     if response then
         if response.status_code == 200 then
-            print("Creating... " .. type(response.text))
-            local filename = "bench." .. vim.bo.filetype
+            local extension = vim.bo.filetype
+            if extension == "javascript" then
+              extension = "mjs"
+            end
+
+            local filename = "bench." .. extension
+            print("Creating... " .. filename)
             write_file(filename, response.text)
             vim.api.nvim_command("vsplit " .. filename)
         else

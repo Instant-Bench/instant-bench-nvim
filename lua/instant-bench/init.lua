@@ -1,3 +1,26 @@
+local spinner_frames = {'⠋', '⠙', '⠹', '⠸', '⠼', '⠴', '⠦', '⠧', '⠇', '⠏'}
+local spinner_index = 1
+local loading = true
+
+local function update_spinner(message)
+  if loading then
+    vim.o.statusline = message .. spinner_frames[spinner_index]
+    spinner_index = (spinner_index % #spinner_frames) + 1
+    vim.defer_fn(update_spinner, 100)
+  else
+    vim.o.statusline = "Loading complete"
+  end
+end
+
+local function start_loading()
+  loading = true
+  update_spinner("Loading ")
+end
+
+local function stop_loading()
+  loading = false
+end
+
 local M = {}
 
 local function makeHttpRequest(url, data)
@@ -48,6 +71,7 @@ local write_file = function(path, data)
 end
 
 function M.sendSelectedText()
+    start_loading()
     local selected_text = getSelectedText()
     local endpoint_url = "http://localhost:3000/"
     local response, err = makeHttpRequest(endpoint_url, { extension = vim.bo.filetype, code = selected_text })
@@ -60,8 +84,9 @@ function M.sendSelectedText()
             end
 
             local filename = "bench." .. extension
-            print("Creating... " .. filename)
+            update_spinner("Creating " .. filename)
             write_file(filename, response.text)
+            stop_loading()
             vim.api.nvim_command("vsplit " .. filename)
         else
             print("HTTP request failed. Error code:", response.status_code)

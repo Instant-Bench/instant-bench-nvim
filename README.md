@@ -3,8 +3,8 @@
 Benchmark selected text
 
 ```vim
-# Dependency
+" Dependency
 Plug 'nvim-lua/plenary.nvim'
-# Plugin
+" Plugin
 Plug 'instant-bench/instant-bench-nvim'
 ```

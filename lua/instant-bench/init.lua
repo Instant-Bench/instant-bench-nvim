@@ -6,7 +6,7 @@ local function update_spinner(message)
   if loading then
     vim.o.statusline = message .. spinner_frames[spinner_index]
     spinner_index = (spinner_index % #spinner_frames) + 1
-    vim.defer_fn(update_spinner, 100)
+    vim.defer_fn(function() update_spinner(message) end, 100)
   else
     vim.o.statusline = "Loading complete"
   end

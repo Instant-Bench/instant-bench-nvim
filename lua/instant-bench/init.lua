@@ -2,6 +2,10 @@ local spinner_frames = {'⠋', '⠙', '⠹', '⠸', '⠼', '⠴', '⠦', '⠧', 
 local spinner_index = 1
 local loading = true
 
+local options = {
+  endpoint = "http://localhost:3000",
+}
+
 local function update_spinner(message)
   if loading then
     vim.o.statusline = message .. spinner_frames[spinner_index]
@@ -70,10 +74,14 @@ local write_file = function(path, data)
   uv.fs_close(fd)
 end
 
+function M.setup(user_options)
+  options = vim.tbl_deep_extend("force", options, user_options or {})
+end
+
 function M.sendSelectedText()
     start_loading()
     local selected_text = getSelectedText()
-    local endpoint_url = "http://localhost:3000/"
+    local endpoint_url = options.endpoint
     local response, err = makeHttpRequest(endpoint_url, { extension = vim.bo.filetype, code = selected_text })
 
     if response then

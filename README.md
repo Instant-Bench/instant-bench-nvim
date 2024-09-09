@@ -18,3 +18,5 @@ require("instant-bench").setup {
 }
 EOF
 ```
+
+The endpoint should be the server URL running [instant-code-2bench](https://github.com/Instant-Bench/instant-code-2bench).

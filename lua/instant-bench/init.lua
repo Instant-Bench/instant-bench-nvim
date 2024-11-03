@@ -4,6 +4,7 @@ local loading = true
 
 local options = {
   endpoint = "http://localhost:3000",
+  api_key = "",
 }
 
 local function update_spinner(message)
@@ -35,6 +36,7 @@ local function makeHttpRequest(url, data)
         body = json,
         headers = {
             ["Content-Type"] = "application/json",
+            ["x-api-key"] = options.api_key,
         },
     })
 

@@ -14,7 +14,8 @@ Plug 'instant-bench/instant-bench-nvim'
 ```vim
 lua << EOF
 require("instant-bench").setup {
-  endpoint = "http://localhost:4001"
+  endpoint = "http://localhost:4001",
+  api_key = "YOUR_CODE2BENCH_API_KEY",
 }
 EOF
 ```

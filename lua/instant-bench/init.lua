@@ -90,7 +90,7 @@ function M.sendSelectedText()
         if response.status_code == 200 then
             local extension = vim.bo.filetype
             if extension == "javascript" then
-              extension = "mjs"
+              extension = "js"
             end
 
             local filename = "bench." .. extension
